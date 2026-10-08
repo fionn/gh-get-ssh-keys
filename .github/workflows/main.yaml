@@ -1,0 +1,82 @@
+name: CI
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+
+  lint:
+
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: Lint newlines
+        uses: fionn/newline-linter@v1.0.3
+
+      - name: Lint Go
+        uses: golangci/golangci-lint-action@v9.3.0
+        with:
+          version: v2.13.2
+
+      - name: Check formatting
+        run: test -z "$(gofmt -l .)"
+
+      - name: Check dependency tidiness
+        run: go mod tidy -diff
+
+  build:
+
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build
+        run: go build -v
+
+      - name: Install gh extension
+        run: gh extension install .
+
+      - name: Get SSH keys list
+        run: gh get-ssh-keys fionn
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Get SSH keys list
+        run: gh get-ssh-keys "$username"
+        env:
+          username: ${{ github.repository_owner }}
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Get SSH keys JSON
+        run: gh get-ssh-keys -json "$username"
+        env:
+          username: ${{ github.repository_owner }}
+          GH_TOKEN: ${{ github.token }}
