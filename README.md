@@ -26,7 +26,7 @@ If passed `-json`, this will print a list of SSH key objects with fields `id`, `
 ### Authorised Keys Format
 
 ```console
-% gh get-ssh-keys fionn
+$ gh get-ssh-keys fionn
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBSydtI14Kok5n/hdqTvuGkZWQhB5BcqIN6kKqxr0I2d xyza
 sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOZ84JMwAYOcbxXLg2gmbREeMAjet9iDHrUITVeOkVTnAAAABHNzaDo= 17244581
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILbkp0LwqqV/w6wAGV9bwiR6FpHC/5DtiBAKFLZxvaSp lotus
@@ -38,7 +38,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhHsaAGLMPDuuzy/RO4CI3QQ2rnb1/3Q+8ytg+7KDBk
 #### Get First Authentication Key
 
 ```console
-% gh get-ssh-keys -json fionn | jq "[.[] | select(.type == \"authentication\")][0]"
+$ gh get-ssh-keys -json fionn | jq "[.[] | select(.type == \"authentication\")][0]"
 {
   "id": 17783706,
   "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBSydtI14Kok5n/hdqTvuGkZWQhB5BcqIN6kKqxr0I2d",
@@ -51,7 +51,7 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhHsaAGLMPDuuzy/RO4CI3QQ2rnb1/3Q+8ytg+7KDBk
 #### Get First Signing Key
 
 ```console
-% gh get-ssh-keys -json fionn | jq "[.[] | select(.type == \"signing\")][0]"
+$ gh get-ssh-keys -json fionn | jq "[.[] | select(.type == \"signing\")][0]"
 {
   "id": 2581,
   "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBSydtI14Kok5n/hdqTvuGkZWQhB5BcqIN6kKqxr0I2d",
