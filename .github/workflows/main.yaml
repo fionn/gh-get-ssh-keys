@@ -65,11 +65,6 @@ jobs:
         run: gh extension install .
 
       - name: Get SSH keys list
-        run: gh get-ssh-keys fionn
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-      - name: Get SSH keys list
         run: gh get-ssh-keys "$username"
         env:
           username: ${{ github.repository_owner }}
