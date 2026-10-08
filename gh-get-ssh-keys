@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eu
+
+function main {
+    local -r username="$1"
+
+    local auth_keys
+    auth_keys="$(gh api \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2026-03-10" \
+        "/users/$username/keys")"
+
+    local auth_keys
+    signing_keys="$(gh api \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2026-03-10" \
+        "/users/$username/ssh_signing_keys")"
+
+    jq --null-input --argjson auth "$auth_keys" --argjson signing "$signing_keys" '{"auth": $auth, "signing": $signing}'
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
